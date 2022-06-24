@@ -1,0 +1,32 @@
+version: '3.3'    
+services:
+
+  backend:
+    container_name: backend
+    build:  ./Backend
+    ports:
+      - '3000:3000'
+    restart: always
+    networks:
+      20151362net:
+        ipv4_address: 192.168.69.4
+
+  frontend:
+    container_name: frontend
+    build:  ./Frontend/Estudiantes
+    ports:
+      - '4200:4200'
+    restart: always
+    links:
+      - backend
+    networks:
+      20151362net:
+        ipv4_address: 192.168.69.3
+
+
+networks:
+  20151362net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.69.0/24"

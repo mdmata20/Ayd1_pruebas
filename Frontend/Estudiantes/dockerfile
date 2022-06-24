@@ -1,0 +1,22 @@
+
+# Instalar node version 143
+FROM node:14-alpine AS build
+
+WORKDIR /app
+
+COPY package.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build --prod
+
+
+## stage 2
+#Crear el servidor de nginx
+
+FROM nginx:1.17.1-alpine As prod-stage
+COPY --from=build /app/dist/estudiantes /usr/share/ngnix/html
+EXPOSE 4200
+CMD ["nginx","-g","daemon off;"]
